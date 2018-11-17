@@ -64,7 +64,10 @@
 
   // сортирую массив чисел и нахожу наибольшее по последнему индексу в массив
   var getMaxValue = function (arr) {
-    var sortedTimes = arr.slice().sort();
+    var sortedTimes = arr.slice().sort(function (a, b) {
+      return a - b;
+    });
+
     var maxTime = sortedTimes[arr.length - 1];
 
     return maxTime;
