@@ -62,15 +62,17 @@
     return name.slice(0, maxLength);
   };
 
-  // сортирую массив чисел и нахожу наибольшее по последнему индексу в массив
+  // сортирует массив чисел и находит наибольшее
   var getMaxValue = function (arr) {
-    var sortedTimes = arr.slice().sort(function (a, b) {
-      return a - b;
-    });
+    var maxValue = arr[0];
 
-    var maxTime = sortedTimes[arr.length - 1];
+    for (var i = 1; i < arr.length; i++) {
+      if (arr[i] > maxValue) {
+        maxValue = arr[i];
+      }
+    }
 
-    return maxTime;
+    return maxValue;
   };
 
   // высчитываю случайный номер в диапазоне от-до
