@@ -28,7 +28,7 @@
     ctx.fillText('Список результатов:', baseX, 60, [360]);
 
     for (var i = 0; i < names.length; i++) {
-      var randomSaturationNumber = getRandomNumber(25, 75);
+      var saturation = getRandomNumber(25, 75);
       var playerTime = Math.round(times[i]);
       var playerName = names[i];
 
@@ -39,11 +39,11 @@
       var playerColumnY = baseY + maxColumnHeight - playerColumnHeight;
       var playerColumnX = baseX + (gapX + columnWidth) * i;
 
-      // определяю цвет для столбцов
-      if (names[i] === me) {
+      // определяет цвет для столбцов
+      if (playerName === me) {
         ctx.fillStyle = 'rgba(255, 0, 0, 1)';
       } else {
-        ctx.fillStyle = 'hsl(240, 100%, ' + randomSaturationNumber + '%)';
+        ctx.fillStyle = 'hsl(240, 100%, ' + saturation + '%)';
       }
 
       ctx.fillRect(playerColumnX, playerColumnY, columnWidth, playerColumnHeight);
@@ -57,7 +57,7 @@
     }
   };
 
-  // задаю максимальную длину выводимого имени
+  // задает максимальную длину выводимого имени
   var shortenName = function (name, maxLength) {
     return name.slice(0, maxLength);
   };
@@ -75,10 +75,8 @@
     return maxValue;
   };
 
-  // высчитываю случайный номер в диапазоне от-до
+  // высчитывает случайный номер в диапазоне от-до
   var getRandomNumber = function (minNumber, maxNumber) {
-    var randomNumber = Math.floor(minNumber + (Math.random() * (maxNumber + 1 - minNumber)));
-
-    return randomNumber;
+    return Math.floor(minNumber + (Math.random() * (maxNumber + 1 - minNumber)));
   };
 })();
