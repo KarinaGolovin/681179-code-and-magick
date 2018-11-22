@@ -10,7 +10,6 @@ var similarCharacterTemplate = document.querySelector('#similar-wizard-template'
 characterPopupPanel.classList.remove('hidden');
 similarCharacterBlock.classList.remove('hidden');
 
-
 var characterCount = 4;
 var wizardNames = [
   'Иван',
@@ -56,26 +55,21 @@ var getRandomNumber = function (minNumber, maxNumber) {
   return Math.floor(minNumber + (Math.random() * (maxNumber + 1 - minNumber)));
 };
 
-// generate random wizard options
+// generate random character options
 var createCharacter = function () {
   var randomCharacter = {
-    name: '',
-    surname: '',
-    coatColor: '',
-    eyesColor: '',
+    name: wizardNames[getRandomNumber(0, wizardNames.length - 1)],
+    surname: wizardSurnames[getRandomNumber(0, wizardSurnames.length - 1)],
+    coatColor: coatColors[getRandomNumber(0, coatColors.length - 1)],
+    eyesColor: eyesColors[getRandomNumber(0, eyesColors.length - 1)],
     fullname: function () {
       return randomCharacter.name + ' ' + randomCharacter.surname;
     }
   };
-
-  randomCharacter['name'] = wizardNames[getRandomNumber(0, wizardNames.length - 1)];
-  randomCharacter['surname'] = wizardSurnames[getRandomNumber(0, wizardSurnames.length - 1)];
-  randomCharacter['coatColor'] = coatColors[getRandomNumber(0, coatColors.length - 1)];
-  randomCharacter['eyesColor'] = eyesColors[getRandomNumber(0, eyesColors.length - 1)];
-
   return randomCharacter;
 };
 
+// render random character template
 var renderRandomCharacter = function (character) {
   // clone template
   var characterElement = similarCharacterTemplate.content.cloneNode(true);
@@ -91,7 +85,7 @@ var renderRandomCharacter = function (character) {
   return characterElement;
 };
 
-// clone wizards and send them to randomCharacterList
+// clone characters and send them to randomCharacterList
 for (var i = 1; i <= characterCount; i++) {
   var randomCharacter = createCharacter();
   var renderTemplate = renderRandomCharacter(randomCharacter);
