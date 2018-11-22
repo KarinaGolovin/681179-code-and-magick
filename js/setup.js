@@ -11,7 +11,7 @@
   characterPopupPanel.classList.remove('hidden');
   similarCharacterBlock.classList.remove('hidden');
 
-  var characterCount = 4;
+  var CHARACTER_COUNT = 4;
   var wizardNames = [
     'Иван',
     'Хуан Себастьян',
@@ -56,22 +56,25 @@
     return Math.floor(minNumber + (Math.random() * (maxNumber + 1 - minNumber)));
   };
 
+  var getRandomProperty = function (props) {
+    return props[getRandomNumber(0, props.length - 1)];
+  };
+
   // generate random character options
-  var createCharacter = function () {
-    var randomCharacter = {
-      name: wizardNames[getRandomNumber(0, wizardNames.length - 1)],
-      surname: wizardSurnames[getRandomNumber(0, wizardSurnames.length - 1)],
-      coatColor: coatColors[getRandomNumber(0, coatColors.length - 1)],
-      eyesColor: eyesColors[getRandomNumber(0, eyesColors.length - 1)],
-      fullname: function () {
-        return randomCharacter.name + ' ' + randomCharacter.surname;
+  var createRandomCharacter = function () {
+    return {
+      name: getRandomProperty(wizardNames),
+      surname: getRandomProperty(wizardSurnames),
+      coatColor: getRandomProperty(coatColors),
+      eyesColor: getRandomProperty(eyesColors),
+      getFullname: function () {
+        return this.name + ' ' + this.surname;
       }
     };
-    return randomCharacter;
   };
 
   // render random character template
-  var renderRandomCharacter = function (character) {
+  var renderCharacter = function (character) {
     // clone template
     var characterElement = similarCharacterTemplate.content.cloneNode(true);
     // link on template wizard options
@@ -79,7 +82,7 @@
     var characterCoatTemplate = characterElement.querySelector('.wizard-coat');
     var characterEyesTemplate = characterElement.querySelector('.wizard-eyes');
     // rewrite template options on random character options
-    characterNameTemplate.textContent = character.fullname();
+    characterNameTemplate.textContent = character.getFullname();
     characterCoatTemplate.style.fill = character.coatColor;
     characterEyesTemplate.style.fill = character.eyesColor;
 
@@ -89,11 +92,10 @@
   // create fragment to hold all characters before append to randomCharacterList
   var fragment = document.createDocumentFragment();
   // clone characters and send them to randomCharacterList
-  for (var i = 1; i <= characterCount; i++) {
-    var randomCharacter = createCharacter();
-    var renderTemplate = renderRandomCharacter(randomCharacter);
+  for (var i = 1; i <= CHARACTER_COUNT; i++) {
+    var randomCharacter = createRandomCharacter();
+    var renderTemplate = renderCharacter(randomCharacter);
     fragment.appendChild(renderTemplate);
   }
   randomCharacterList.appendChild(fragment);
 })();
-
