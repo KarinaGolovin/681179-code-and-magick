@@ -1,11 +1,18 @@
 'use strict';
 
-var setupBlock = document.querySelector('.setup');
-var makeSetupBlockVisible = setupBlock.classList.remove('hidden');
+var characterPopupPanel = document.querySelector('.setup');
+var similarCharacterBlock = characterPopupPanel.querySelector('.setup-similar');
+// place to put template list
+var randomCharacterList = similarCharacterBlock.querySelector('.setup-similar-list');
+// wizard template to clone >>> randomCharacterList
+var similarCharacterTemplate = document.querySelector('#similar-wizard-template');
 
-var wizardOptions = [wizardNames, wizardSurnames, coatColor, eyesColor];
+characterPopupPanel.classList.remove('hidden');
+similarCharacterBlock.classList.remove('hidden');
 
-var wizardName = [
+
+var characterCount = 4;
+var wizardNames = [
   'Иван',
   'Хуан Себастьян',
   'Мария',
@@ -16,7 +23,7 @@ var wizardName = [
   'Вашингтон',
 ];
 
-var wizardSurname = [
+var wizardSurnames = [
   'да Марья',
   'Верон',
   'Мирабелла',
@@ -27,7 +34,7 @@ var wizardSurname = [
   'Ирвинг',
 ];
 
-var coatColor = [
+var coatColors = [
   'rgb(101, 137, 164)',
   'rgb(241, 43, 107)',
   'rgb(146, 100, 161)',
@@ -36,7 +43,7 @@ var coatColor = [
   'rgb(0, 0, 0)',
 ];
 
-var eyesColor = [
+var eyesColors = [
   'black',
   'red',
   'blue',
@@ -44,31 +51,41 @@ var eyesColor = [
   'green',
 ];
 
-// create wizard with random descriptions/options
-var createWizard = function (wizardOptions) {
-  var wizard = {};
-
-  for (var i = 0; i < i.length; i++) {
-    var wizardKey = wizardOptions[i];
-
-    wizard[wizardKey] = wizardKey[getRandomNumber(0, wizardKey.length)];
-  }
-  return wizard;
-};
-
-
-
-// var wizard = {};
-
-// var createWizard = function () {
-//   wizard.name = wizardNames[getRandomNumber(0, wizardNames.length)];
-//   wizard.surname = wizardSurnames[getRandomNumber(0, wizardSurnames.length)];
-//   wizard.coatColor = coatColor[getRandomNumber(0, coatColor.length)];
-//   wizard.eyesColor = eyesColor[getRandomNumber(0, eyesColor.length)];
-// };
-
-
 // get random number in the range from...to
 var getRandomNumber = function (minNumber, maxNumber) {
   return Math.floor(minNumber + (Math.random() * (maxNumber + 1 - minNumber)));
 };
+
+// generate random wizard options
+var createCharacter = function () {
+  var randomCharacter = {
+    name: wizardNames[getRandomNumber(0, wizardNames - 1)],
+    surname: wizardSurnames[getRandomNumber(0, wizardSurnames - 1)],
+    fullname: randomCharacter.name + ' ' + randomCharacter.surname
+    coatColor: coatColors[getRandomNumber(0, coatColors - 1)],
+    eyesColor: eyesColors[getRandomNumber(0, eyesColors - 1)]
+  }
+  return randomCharacter;
+};
+
+var renderRandomCharacter = function (character) {
+  // clone template
+  var characterElement = similarCharacterTemplate.content.cloneNode(true);
+  // link on template wizard options
+  var characterNameTemplate = characterElement.querySelector('.setup-similar-label');
+  var characterCoatTemplate =  characterElement.querySelector('.wizard-coat');
+  var characterEyesTemplate =   characterElement.querySelector('.wizard-eyes');
+  // rewrite template options to random character options
+  characterNameTemplate.textContent = character.fullname;
+  characterCoatTemplate.style.fill = character.coatColor;
+  characterEyesTemplate.style.fill = character.eyesColor;
+
+  return characterElement;
+};
+
+// clone wizards and send them to randomCharacterList
+for (var i = 1; i <= characterCount; i++) {
+  var randomCharacter = createCharacter();
+  var renderTemplate = renderRandomCharacter(randomCharacter);
+  randomCharacterList.appendChild(renderTemplate);
+}
