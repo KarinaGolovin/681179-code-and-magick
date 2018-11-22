@@ -77,7 +77,7 @@ var renderRandomCharacter = function (character) {
   var characterNameTemplate = characterElement.querySelector('.setup-similar-label');
   var characterCoatTemplate = characterElement.querySelector('.wizard-coat');
   var characterEyesTemplate = characterElement.querySelector('.wizard-eyes');
-  // rewrite template options to random character options
+  // rewrite template options on random character options
   characterNameTemplate.textContent = character.fullname();
   characterCoatTemplate.style.fill = character.coatColor;
   characterEyesTemplate.style.fill = character.eyesColor;
@@ -85,9 +85,12 @@ var renderRandomCharacter = function (character) {
   return characterElement;
 };
 
+// create fragment to hold all characters before append to randomCharacterList
+var fragment = document.createDocumentFragment();
 // clone characters and send them to randomCharacterList
 for (var i = 1; i <= characterCount; i++) {
   var randomCharacter = createCharacter();
   var renderTemplate = renderRandomCharacter(randomCharacter);
-  randomCharacterList.appendChild(renderTemplate);
+  fragment.appendChild(renderTemplate);
 }
+randomCharacterList.appendChild(fragment);
