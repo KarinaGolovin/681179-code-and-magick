@@ -59,12 +59,20 @@ var getRandomNumber = function (minNumber, maxNumber) {
 // generate random wizard options
 var createCharacter = function () {
   var randomCharacter = {
-    name: wizardNames[getRandomNumber(0, wizardNames - 1)],
-    surname: wizardSurnames[getRandomNumber(0, wizardSurnames - 1)],
-    fullname: randomCharacter.name + ' ' + randomCharacter.surname
-    coatColor: coatColors[getRandomNumber(0, coatColors - 1)],
-    eyesColor: eyesColors[getRandomNumber(0, eyesColors - 1)]
-  }
+    name: '',
+    surname: '',
+    coatColor: '',
+    eyesColor: '',
+    fullname: function () {
+      return randomCharacter.name + ' ' + randomCharacter.surname;
+    }
+  };
+
+  randomCharacter['name'] = wizardNames[getRandomNumber(0, wizardNames.length - 1)];
+  randomCharacter['surname'] = wizardSurnames[getRandomNumber(0, wizardSurnames.length - 1)];
+  randomCharacter['coatColor'] = coatColors[getRandomNumber(0, coatColors.length - 1)];
+  randomCharacter['eyesColor'] = eyesColors[getRandomNumber(0, eyesColors.length - 1)];
+
   return randomCharacter;
 };
 
@@ -73,10 +81,10 @@ var renderRandomCharacter = function (character) {
   var characterElement = similarCharacterTemplate.content.cloneNode(true);
   // link on template wizard options
   var characterNameTemplate = characterElement.querySelector('.setup-similar-label');
-  var characterCoatTemplate =  characterElement.querySelector('.wizard-coat');
-  var characterEyesTemplate =   characterElement.querySelector('.wizard-eyes');
+  var characterCoatTemplate = characterElement.querySelector('.wizard-coat');
+  var characterEyesTemplate = characterElement.querySelector('.wizard-eyes');
   // rewrite template options to random character options
-  characterNameTemplate.textContent = character.fullname;
+  characterNameTemplate.textContent = character.fullname();
   characterCoatTemplate.style.fill = character.coatColor;
   characterEyesTemplate.style.fill = character.eyesColor;
 
