@@ -52,7 +52,7 @@
   ];
 
   var getRandomProperty = function (props) {
-    return props[usefulUtilities.getRandomNumber(0, props.length - 1)];
+    return props[window.usefulUtilities.getRandomNumber(0, props.length - 1)];
   };
 
   // generate random character options

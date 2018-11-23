@@ -28,7 +28,7 @@
     ctx.fillText('Список результатов:', baseX, 60, [360]);
 
     for (var i = 0; i < names.length; i++) {
-      var saturation = usefulUtilities.getRandomNumber(25, 75);
+      var saturation = window.usefulUtilities.getRandomNumber(25, 75);
       var playerTime = Math.round(times[i]);
       var playerName = names[i];
 
