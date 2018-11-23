@@ -28,7 +28,7 @@
     ctx.fillText('Список результатов:', baseX, 60, [360]);
 
     for (var i = 0; i < names.length; i++) {
-      var saturation = getRandomNumber(25, 75);
+      var saturation = usefulUtilities.getRandomNumber(25, 75);
       var playerTime = Math.round(times[i]);
       var playerName = names[i];
 
@@ -73,10 +73,5 @@
     }
 
     return maxValue;
-  };
-
-  // высчитывает случайный номер в диапазоне от-до
-  var getRandomNumber = function (minNumber, maxNumber) {
-    return Math.floor(minNumber + (Math.random() * (maxNumber + 1 - minNumber)));
   };
 })();

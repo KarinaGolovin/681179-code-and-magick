@@ -51,13 +51,8 @@
     'green',
   ];
 
-  // get random number in the range from...to
-  var getRandomNumber = function (minNumber, maxNumber) {
-    return Math.floor(minNumber + (Math.random() * (maxNumber + 1 - minNumber)));
-  };
-
   var getRandomProperty = function (props) {
-    return props[getRandomNumber(0, props.length - 1)];
+    return props[usefulUtilities.getRandomNumber(0, props.length - 1)];
   };
 
   // generate random character options
