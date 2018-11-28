@@ -228,9 +228,14 @@
   });
 
   wizardCoat.addEventListener('click', function () {
-    wizardCoat.style.fill = 'red';
+    var colorIndex = getRandomProperty(COAT_COLORS);
+    wizardCoat.style.fill = colorIndex;
   });
 
+  wizardEyes.addEventListener('click', function () {
+    var colorIndex = getRandomProperty(EYES_COLORS);
+    wizardEyes.style.fill = colorIndex;
+  });
 
   // var changeColor = function (element, arr) {
   //   var colorIndex = getRandomProperty(arr);
