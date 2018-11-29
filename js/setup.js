@@ -1,6 +1,10 @@
 'use strict';
 
 (function () {
+  var KEY_CODES = {
+    enter: 13,
+    esc: 27
+  };
   var CHARACTER_COUNT = 4;
   var WIZARD_NAMES = [
     'Иван',
@@ -49,21 +53,29 @@
     '#e6e848',
   ];
 
+  var setupWindow = document.querySelector('.setup');
+  var setupOpenButton = document.querySelector('.setup-open-icon');
+  var setupCloseButton = setupWindow.querySelector('.setup-close');
+  var setupSubmitButton = setupWindow.querySelector('.setup-submit');
+  var nameInput = setupWindow.querySelector('.setup-user-name');
+  var wizard = setupWindow.querySelector('.setup-wizard');
+  var wizardCoat = wizard.querySelector('.wizard-coat');
+  var wizardEyes = wizard.querySelector('.wizard-eyes');
+  var fireball = setupWindow.querySelector('.setup-fireball-wrap');
   var characterPopupPanel = document.querySelector('.setup');
   var similarCharacterBlock = characterPopupPanel.querySelector('.setup-similar');
-  // place to put template list
+  // Place to put template list
   var randomCharacterList = similarCharacterBlock.querySelector('.setup-similar-list');
   // wizard template to clone in randomCharacterList
   var similarCharacterTemplate = document.querySelector('#similar-wizard-template');
 
-  // characterPopupPanel.classList.remove('hidden');
   similarCharacterBlock.classList.remove('hidden');
 
   var getRandomProperty = function (props) {
     return props[window.usefulUtilities.getRandomNumber(0, props.length - 1)];
   };
 
-  // generate random character options
+  // Generate random character options
   var createRandomCharacter = function () {
     return {
       name: getRandomProperty(WIZARD_NAMES),
@@ -76,15 +88,15 @@
     };
   };
 
-  // render random character template
+  // Render random character template
   var renderCharacter = function (character) {
-    // clone template
+    // Clone template
     var characterElement = similarCharacterTemplate.content.cloneNode(true);
-    // link on template wizard options
+    // Link on template wizard options
     var characterNameTemplate = characterElement.querySelector('.setup-similar-label');
     var characterCoatTemplate = characterElement.querySelector('.wizard-coat');
     var characterEyesTemplate = characterElement.querySelector('.wizard-eyes');
-    // rewrite template options on random character options
+    // Rewrite template options on random character options
     characterNameTemplate.textContent = character.getFullname();
     characterCoatTemplate.style.fill = character.coatColor;
     characterEyesTemplate.style.fill = character.eyesColor;
@@ -92,9 +104,9 @@
     return characterElement;
   };
 
-  // create fragment to hold all characters before append to randomCharacterList
+  // Create fragment to hold all characters before append to randomCharacterList
   var fragment = document.createDocumentFragment();
-  // clone characters and send them to randomCharacterList
+  // Clone characters and send them to randomCharacterList
   for (var i = 1; i <= CHARACTER_COUNT; i++) {
     var randomCharacter = createRandomCharacter();
     var renderTemplate = renderCharacter(randomCharacter);
@@ -102,104 +114,7 @@
   }
   randomCharacterList.appendChild(fragment);
 
-  // ----------- Setup wizard -------------
-
-  var setupWindow = document.querySelector('.setup');
-  var setupOpenButton = document.querySelector('.setup-open-icon');
-  var setupCloseButton = setupWindow.querySelector('.setup-close');
-  var setupSubmitButton = setupWindow.querySelector('.setup-submit');
-  var nameInput = setupWindow.querySelector('.setup-user-name');
-  var wizard = setupWindow.querySelector('.setup-wizard');
-  var wizardCoat = wizard.querySelector('.wizard-coat');
-  var wizardEyes = wizard.querySelector('.wizard-eyes');
-  var fireball = setupWindow.querySelector('.setup-fireball-wrap');
-
-  var closePopup = function () {
-    setupWindow.classList.add('hidden');
-    setupWindow.classList.remove('active');
-  };
-
-  var openPopup = function () {
-    setupWindow.classList.remove('hidden');
-    setupWindow.classList.add('active');
-  };
-
-  var handleOpenKeyboard = function (evt) {
-    if (evt.keyCode === 13) {
-      evt.preventDefault();
-      openPopup();
-    }
-  };
-
-  var handleCloseKeyboard = function (evt) {
-    if (evt.keyCode === 13) {
-      evt.preventDefault();
-      closePopup();
-    }
-  };
-
-  // Variations of open popup
-  // Click
-  setupOpenButton.addEventListener('click', openPopup);
-
-  // Focus + ENTER
-  setupOpenButton.addEventListener('focus', function () {
-    setupOpenButton.addEventListener('keydown', handleOpenKeyboard);
-  });
-  setupOpenButton.addEventListener('blur', function () {
-    setupOpenButton.removeEventListener('keydown', handleOpenKeyboard);
-  });
-
-  // Mouseover + ENTER
-  setupOpenButton.addEventListener('mouseover', function () {
-    document.addEventListener('keydown', handleOpenKeyboard);
-  });
-
-  // Variation of close popup
-  // Click
-  setupCloseButton.addEventListener('click', closePopup);
-
-  // Focus + ENTER
-  setupCloseButton.addEventListener('focus', function () {
-    setupCloseButton.addEventListener('keydown', handleCloseKeyboard);
-  });
-  setupCloseButton.addEventListener('blur', function () {
-    setupCloseButton.removeEventListener('keydown', handleCloseKeyboard);
-  });
-
-  // ESC
-  document.addEventListener('keydown', function (evt) {
-    if (evt.keyCode === 27) {
-      evt.preventDefault();
-      closePopup();
-    }
-  });
-
-  // Submit button ???
-  setupSubmitButton.addEventListener('focus', function (form) {
-    setupSubmitButton.addEventListener('keydown', function (evt) {
-      if (evt.keyCode === 13) {
-        form.submit();
-      }
-    });
-  });
-
-  // Validity check
-  var validateNameInput = function () {
-    if (nameInput.validity.tooShort) {
-      nameInput.setCustomValidity('Пожалуйста, постарайтесь еще. Имя должно состоять из 2-х символов.');
-    } else if (nameInput.validity.tooLong) {
-      nameInput.setCustomValidity('Не-не-не! Слишком длинно! 25 символов, пожалуйста!');
-    } else if (nameInput.validity.valueMissing) {
-      nameInput.setCustomValidity('Ну же, всего пару буковок введи!');
-    } else {
-      nameInput.setCustomValidity('');
-    }
-  };
-
-  nameInput.addEventListener('invalid', validateNameInput);
-
-  // Wizard
+  // Wizard character
   fireball.addEventListener('click', function () {
     var color = getRandomProperty(FIREBALL_COLORS);
     fireball.style.background = color;
@@ -217,4 +132,88 @@
     document.querySelector('[name="eyes-color"]').value = color;
     wizardEyes.style.fill = color;
   });
+
+  // Event Listeners
+  var closePopup = function () {
+    setupWindow.classList.add('hidden');
+    setupWindow.classList.remove('active');
+  };
+
+  var openPopup = function () {
+    setupWindow.classList.remove('hidden');
+    setupWindow.classList.add('active');
+  };
+
+  var openOnEnterPress = function (event) {
+    if (event.keyCode === KEY_CODES.enter) {
+      event.preventDefault();
+      openPopup();
+    }
+  };
+
+  var closeOnEnterPress = function (event) {
+    if (event.keyCode === KEY_CODES.enter) {
+      event.preventDefault();
+      closePopup();
+    }
+  };
+
+  // Variations of open popup
+  // Click
+  setupOpenButton.addEventListener('click', openPopup);
+
+  // Focus + ENTER
+  setupOpenButton.addEventListener('focus', function () {
+    setupOpenButton.addEventListener('keydown', openOnEnterPress);
+  });
+  setupOpenButton.addEventListener('blur', function () {
+    setupOpenButton.removeEventListener('keydown', openOnEnterPress);
+  });
+
+  // Variation of close popup
+  // Click
+  setupCloseButton.addEventListener('click', closePopup);
+
+  // Focus + ENTER
+  setupCloseButton.addEventListener('focus', function () {
+    setupCloseButton.addEventListener('keydown', closeOnEnterPress);
+  });
+  setupCloseButton.addEventListener('blur', function () {
+    setupCloseButton.removeEventListener('keydown', closeOnEnterPress);
+  });
+
+  // ESC
+  document.addEventListener('keydown', function (event) {
+    if (event.keyCode === KEY_CODES.esc && document.activeElement !== nameInput) {
+      event.preventDefault();
+      closePopup();
+    }
+  });
+
+  // Submit button
+  setupSubmitButton.addEventListener('keydown', function (event) {
+    if (event.keyCode !== KEY_CODES.enter) {
+      return;
+    }
+    var form = event.currentTarget.closest('form');
+
+    if (form) {
+      form.submit();
+    }
+  });
+
+  // Validity check
+  var validateNameInput = function () {
+    if (nameInput.validity.tooShort) {
+      nameInput.setCustomValidity('Пожалуйста, постарайтесь еще. Имя должно состоять из 2-х символов.');
+    } else if (nameInput.validity.tooLong) {
+      nameInput.setCustomValidity('Не-не-не! Слишком длинно! 25 символов, пожалуйста!');
+    } else if (nameInput.validity.valueMissing) {
+      nameInput.setCustomValidity('Ну же, всего пару буковок введи!');
+    } else {
+      nameInput.setCustomValidity('');
+    }
+  };
+
+  nameInput.addEventListener('invalid', validateNameInput);
 })();
