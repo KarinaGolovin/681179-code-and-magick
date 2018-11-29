@@ -159,7 +159,7 @@
   // Click
   setupCloseButton.addEventListener('click', closePopup);
 
-  // Mouseover + ENTER
+  // Focus + ENTER
   setupCloseButton.addEventListener('focus', function () {
     setupCloseButton.addEventListener('keydown', handleCloseKeyboard);
   });
