@@ -53,7 +53,7 @@
   var similarCharacterBlock = characterPopupPanel.querySelector('.setup-similar');
   // place to put template list
   var randomCharacterList = similarCharacterBlock.querySelector('.setup-similar-list');
-  // wizard template to clone >>> randomCharacterList
+  // wizard template to clone in randomCharacterList
   var similarCharacterTemplate = document.querySelector('#similar-wizard-template');
 
   // characterPopupPanel.classList.remove('hidden');
@@ -114,140 +114,107 @@
   var wizardEyes = wizard.querySelector('.wizard-eyes');
   var fireball = setupWindow.querySelector('.setup-fireball-wrap');
 
-  // variation of open popup
-  var openPopup = function () {
-    setupWindow.classList.remove('hidden');
-    setupWindow.classList.add('active');
-  };
-
-  setupOpenButton.addEventListener('click', openPopup);
-
-  // NOT WORKING
-  document.addEventListener('keydown', function (evt) {
-    if (evt.keyCode === 13 && setupOpenButton.onfocus) {
-      evt.preventDefault();
-      setupWindow.classList.remove('hidden');
-      setupWindow.classList.add('active');
-    }
-  });
-
-
-  setupOpenButton.addEventListener('mouseover', function () {
-    document.addEventListener('keydown', function (evt) {
-      if (evt.keyCode === 13) {
-        evt.preventDefault();
-        setupWindow.classList.remove('hidden');
-        setupWindow.classList.add('active');
-      }
-    });
-  });
-
-  // variation of close popup
   var closePopup = function () {
     setupWindow.classList.add('hidden');
     setupWindow.classList.remove('active');
   };
 
+  var openPopup = function () {
+    setupWindow.classList.remove('hidden');
+    setupWindow.classList.add('active');
+  };
+
+  var handleOpenKeyboard = function (evt) {
+    if (evt.keyCode === 13) {
+      evt.preventDefault();
+      openPopup();
+    }
+  };
+
+  var handleCloseKeyboard = function (evt) {
+    if (evt.keyCode === 13) {
+      evt.preventDefault();
+      closePopup();
+    }
+  };
+
+  // Variations of open popup
+  // Click
+  setupOpenButton.addEventListener('click', openPopup);
+
+  // Focus + ENTER
+  setupOpenButton.addEventListener('focus', function () {
+    setupOpenButton.addEventListener('keydown', handleOpenKeyboard);
+  });
+  setupOpenButton.addEventListener('blur', function () {
+    setupOpenButton.removeEventListener('keydown', handleOpenKeyboard);
+  });
+
+  // Mouseover + ENTER
+  setupOpenButton.addEventListener('mouseover', function () {
+    document.addEventListener('keydown', handleOpenKeyboard);
+  });
+
+  // Variation of close popup
+  // Click
   setupCloseButton.addEventListener('click', closePopup);
 
+  // Mouseover + ENTER
+  setupCloseButton.addEventListener('focus', function () {
+    setupCloseButton.addEventListener('keydown', handleCloseKeyboard);
+  });
+  setupCloseButton.addEventListener('blur', function () {
+    setupCloseButton.removeEventListener('keydown', handleCloseKeyboard);
+  });
+
+  // ESC
   document.addEventListener('keydown', function (evt) {
     if (evt.keyCode === 27) {
-      if (!nameInput.onfocus) {
-        evt.preventDefault();
-        setupWindow.classList.add('hidden');
-        setupWindow.classList.remove('active');
-      }
+      evt.preventDefault();
+      closePopup();
     }
   });
 
-  // поправить, чтоб не закрывалось все окно при любом enter
-  setupCloseButton.addEventListener('mouseover', function () {
-    setupCloseButton.addEventListener('keydown', function (evt) {
+  // Submit button ???
+  setupSubmitButton.addEventListener('focus', function (form) {
+    setupSubmitButton.addEventListener('keydown', function (evt) {
       if (evt.keyCode === 13) {
-        evt.preventDefault();
-        setupWindow.classList.add('hidden');
-        setupWindow.classList.remove('active');
+        form.submit();
       }
     });
   });
 
-  // // NOT WORKING
-  // // name area to be active in setup open moment
-
-  // проверка валидации инпута
-  var validateInput = function () {
-    nameInput.addEventListener('invalid', function (evt) {
-      if (nameInput.validity.tooShort) {
-        nameInput.setCustomValidity('Пожалуйста, постарайтесь еще. Имя должно состоять из 2-х символов.');
-      } else if (nameInput.validity.tooLong) {
-        nameInput.setCustomValidity('Не-не-не! Слишком длинно! 25 символов, пожалуйста!');
-      } else if (nameInput.validity.valueMissing) {
-        nameInput.setCustomValidity('Ну же, всего пару буковок введи!');
-      } else {
-        nameInput.setCustomValidity('');
-      }
-    });
+  // Validity check
+  var validateNameInput = function () {
+    if (nameInput.validity.tooShort) {
+      nameInput.setCustomValidity('Пожалуйста, постарайтесь еще. Имя должно состоять из 2-х символов.');
+    } else if (nameInput.validity.tooLong) {
+      nameInput.setCustomValidity('Не-не-не! Слишком длинно! 25 символов, пожалуйста!');
+    } else if (nameInput.validity.valueMissing) {
+      nameInput.setCustomValidity('Ну же, всего пару буковок введи!');
+    } else {
+      nameInput.setCustomValidity('');
+    }
   };
 
-  // send to server
-  // setupSubmitButton.addEventListener('submit', function (event) {
-  // event.preventDefault();
-  // sendData();
-  //   // отправка на сервер
-  // var sendData = function () {
-  //   // form.submit()
-  //   // var FD = new FormData();
-  //   // XHR.open('POST', 'https://js.dump.academy/code-and-magick');
-  //   // XHR.setRequestHeader('Content-Type', 'multipart/form-data');
-  //   // XHR.send(FD);
-  // }
+  nameInput.addEventListener('invalid', validateNameInput);
 
-  // добавить в HTML
-  // <form id="setupSubmit">
-  // <input id="wizardName" name="name" value="(что введено в поле)"></input>
-  // <button type="submit" value="Сохранить">
-  // </form>
-
-  // });
-
-  // NOT WORKING
-  if (setupWindow.classList.contains('active') && setupSubmitButton.onfocus) {
-    document.addEventListener('keydown', function (evt) {
-      if (evt.keyCode === 13) {
-        // отправка на сервер
-        setupWindow.classList.add('hidden');
-        setupWindow.classList.remove('active');
-      }
-    }, true);
-  }
-
-  // ----- Wizard -----
+  // Wizard
   fireball.addEventListener('click', function () {
-    var colorIndex = getRandomProperty(FIREBALL_COLORS);
-    fireball.style.background = colorIndex;
+    var color = getRandomProperty(FIREBALL_COLORS);
+    fireball.style.background = color;
+    document.querySelector('[name="fireball-color"]').value = color;
   });
 
   wizardCoat.addEventListener('click', function () {
-    var colorIndex = getRandomProperty(COAT_COLORS);
-    wizardCoat.style.fill = colorIndex;
+    var color = getRandomProperty(COAT_COLORS);
+    document.querySelector('[name="coat-color"]').value = color;
+    wizardCoat.style.fill = color;
   });
 
   wizardEyes.addEventListener('click', function () {
-    var colorIndex = getRandomProperty(EYES_COLORS);
-    wizardEyes.style.fill = colorIndex;
+    var color = getRandomProperty(EYES_COLORS);
+    document.querySelector('[name="eyes-color"]').value = color;
+    wizardEyes.style.fill = color;
   });
-
-  // var changeColor = function (element, arr) {
-  //   var colorIndex = getRandomProperty(arr);
-  //   if (element === fireball) {
-  //     fireball.style.background = colorIndex;
-  //   } else {
-  //     element.style.fill = colorIndex;
-  //   }
-  // };
-
-  // wizardCoat.addEventListener('click', changeColor(wizardCoat, COAT_COLORS));
-  // wizardEyes.addEventListener('click', changeColor(wizardEyes, EYES_COLORS));
-  // fireball.addEventListener('click', changeColor(fireball, FIREBALL_COLORS));
-
 })();

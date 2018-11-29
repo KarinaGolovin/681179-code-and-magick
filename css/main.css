@@ -761,6 +761,12 @@ input[type=radio]:checked + .review-mark-label
     transform: translateY(-.3em);
 
     color: #000;
+
+    /* Add some corrections, to change .setup-close span into button */
+    -webkit-appearance: none;
+    background: none;
+    margin: 0;
+    padding: 0;
 }
 
 .setup-artifacts-shop

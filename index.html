@@ -69,6 +69,7 @@
 
 <div class="overlay setup hidden">
   <form class="setup-wizard-form"
+        action="https://js.dump.academy/code-and-magick"
         method="post"
         enctype="multipart/form-data"
         autocomplete="off">
@@ -80,13 +81,15 @@
           <input type="file" name="avatar">
         </div>
         <label>
-          <input type="text" name="username" minlength="2"
-                 maxlength="25" required
-                 class="setup-user-name" value="Синий Пендальф"/>
+          <input type="text" name="username"
+                minlength="2"
+                maxlength="25"
+                required
+                class="setup-user-name" value="Синий Пендальф"/>
         </label>
       </div>
-
-      <span class="setup-close">&times;</span>
+      <!-- Changed span into button to improve usability -->
+      <button type="button" class="setup-close">&times;</button>
     </div>
 
 
