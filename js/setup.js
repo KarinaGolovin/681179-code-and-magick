@@ -190,18 +190,6 @@
     }
   });
 
-  // Submit button
-  setupSubmitButton.addEventListener('keydown', function (event) {
-    if (event.keyCode !== KEY_CODES.enter) {
-      return;
-    }
-    var form = event.currentTarget.closest('form');
-
-    if (form) {
-      form.submit();
-    }
-  });
-
   // Validity check
   var validateNameInput = function () {
     if (nameInput.validity.tooShort) {
