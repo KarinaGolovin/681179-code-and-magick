@@ -3,6 +3,7 @@
 
 (function () {
   window.renderStatistics = function (ctx, names, times) {
+    var getMaxValue = window.usefulUtilities.getMaxValue;
     var gapX = 50;
     var gapY = 10;
     var columnWidth = 40;
@@ -11,7 +12,7 @@
     var baseY = 90;
     var maxTime = getMaxValue(times);
     var me = 'Вы';
-    var getMaxValue = window.usefulUtilities.getMaxValue;
+
 
     // Popup shadow
     ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
