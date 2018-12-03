@@ -49,11 +49,10 @@
     '#e6e848',
   ];
 
-  var setupWindow = document.querySelector('.setup');
-  var wizard = setupWindow.querySelector('.setup-wizard');
+  var wizard = document.querySelector('.setup-wizard');
   var wizardCoat = wizard.querySelector('.wizard-coat');
   var wizardEyes = wizard.querySelector('.wizard-eyes');
-  var fireball = setupWindow.querySelector('.setup-fireball-wrap');
+  var fireball = document.querySelector('.setup-fireball-wrap');
   var characterPopupPanel = document.querySelector('.setup');
   var similarCharacterBlock = characterPopupPanel.querySelector('.setup-similar');
   // Place to put template list

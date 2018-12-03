@@ -5,15 +5,23 @@
     enter: 13,
     esc: 27
   };
-  // 2 places!!!
+
   var setupWindow = document.querySelector('.setup');
   var setupOpenButton = document.querySelector('.setup-open-icon');
   var setupCloseButton = setupWindow.querySelector('.setup-close');
   var nameInput = setupWindow.querySelector('.setup-user-name');
+  var userPic = setupWindow.querySelector('.setup-user-pic');
+  var picUploadButton = setupWindow.querySelector('.upload');
+  var picWidth = userPic.offsetWidth;
+  var picHeight = userPic.offsetHeight;
+
+
   // Event Listeners
   var closePopup = function () {
     setupWindow.classList.add('hidden');
     setupWindow.classList.remove('active');
+    setupWindow.style.left = '';
+    setupWindow.style.top = '';
   };
 
   var openPopup = function () {
@@ -81,5 +89,42 @@
   };
 
   nameInput.addEventListener('invalid', validateNameInput);
+
+  // -----------drag-n-drop----------
+  var dragHapened = false;
+
+  picUploadButton.addEventListener('click', function (evt) {
+    if (dragHapened) {
+      evt.preventDefault();
+      dragHapened = false;
+    }
+  });
+
+  picUploadButton.addEventListener('mousedown', function (evt) {
+    evt.preventDefault();
+    var startPosition = {
+      clientX: evt.clientX,
+      clientY: evt.clientY,
+      x: setupWindow.offsetLeft,
+      y: setupWindow.offsetTop
+    };
+
+    var moveWindow = function (moveEvt) {
+      dragHapened = true;
+      var deltaX = startPosition.clientX - moveEvt.clientX;
+      var deltaY = startPosition.clientY - moveEvt.clientY;
+
+      setupWindow.style.left = (startPosition.x - deltaX) + picWidth / 2 + 'px';
+      setupWindow.style.top = (startPosition.y - deltaY) - picHeight / 2 + 'px';
+    };
+
+    var stopWindow = function () {
+      document.removeEventListener('mousemove', moveWindow);
+      document.removeEventListener('mouseup', stopWindow);
+    };
+
+    document.addEventListener('mousemove', moveWindow);
+    document.addEventListener('mouseup', stopWindow);
+  });
 })();
 
