@@ -1,11 +1,11 @@
 'use strict';
 
 window.usefulUtilities = {
-  // Пet random number in the range from...to
+  // Get random number in the range from...to
   getRandomNumber: function (minNumber, maxNumber) {
     return Math.floor(minNumber + (Math.random() * (maxNumber + 1 - minNumber)));
   },
-  // Sort and find highest number
+
   getMaxValue: function (arr) {
     var maxValue = arr[0];
 

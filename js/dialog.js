@@ -15,7 +15,6 @@
   var picWidth = userPic.offsetWidth;
   var picHeight = userPic.offsetHeight;
 
-
   // Event Listeners
   var closePopup = function () {
     setupWindow.classList.add('hidden');
@@ -109,7 +108,7 @@
       y: setupWindow.offsetTop
     };
 
-    var moveWindow = function (moveEvt) {
+    var movePopup = function (moveEvt) {
       dragHapened = true;
       var deltaX = startPosition.clientX - moveEvt.clientX;
       var deltaY = startPosition.clientY - moveEvt.clientY;
@@ -118,13 +117,13 @@
       setupWindow.style.top = (startPosition.y - deltaY) - picHeight / 2 + 'px';
     };
 
-    var stopWindow = function () {
-      document.removeEventListener('mousemove', moveWindow);
-      document.removeEventListener('mouseup', stopWindow);
+    var stopPopup = function () {
+      document.removeEventListener('mousemove', movePopup);
+      document.removeEventListener('mouseup', stopPopup);
     };
 
-    document.addEventListener('mousemove', moveWindow);
-    document.addEventListener('mouseup', stopWindow);
+    document.addEventListener('mousemove', movePopup);
+    document.addEventListener('mouseup', stopPopup);
   });
 })();
 
