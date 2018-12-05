@@ -3,6 +3,7 @@
 
 (function () {
   window.renderStatistics = function (ctx, names, times) {
+    var getMaxValue = window.usefulUtilities.getMaxValue;
     var gapX = 50;
     var gapY = 10;
     var columnWidth = 40;
@@ -12,16 +13,17 @@
     var maxTime = getMaxValue(times);
     var me = 'Вы';
 
-    // тень вылетающего окна
+
+    // Popup shadow
     ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
     ctx.fillRect(110, 20, 420, 270);
-    // рамка вылетающего окна
+    // Popup border
     ctx.strokeStyle = 'rgba(0, 0, 0, 0.3)';
     ctx.strokeRect(99, 9, 422, 272);
-    // окно
+    // Popup
     ctx.fillStyle = 'white';
     ctx.fillRect(100, 10, 420, 270);
-    // текст в окне
+    // Popup text
     ctx.fillStyle = 'black';
     ctx.font = '16px "PT Mono"';
     ctx.fillText('Ура вы победили!', baseX, 40, [360]);
@@ -32,14 +34,14 @@
       var playerTime = Math.round(times[i]);
       var playerName = names[i];
 
-      // отношение
+      // Ratio
       var ratio = playerTime / maxTime;
       var playerColumnHeight = maxColumnHeight * ratio;
 
       var playerColumnY = baseY + maxColumnHeight - playerColumnHeight;
       var playerColumnX = baseX + (gapX + columnWidth) * i;
 
-      // определяет цвет для столбцов
+      // Score line color
       if (playerName === me) {
         ctx.fillStyle = 'rgba(255, 0, 0, 1)';
       } else {
@@ -50,28 +52,15 @@
 
       ctx.fillStyle = 'black';
       ctx.textBaseline = 'middle';
-      // вывод времени игроков
+      // Show players time
       ctx.fillText(playerTime, playerColumnX, playerColumnY - gapY, [50]);
-      // вывод имен игроков
+      // Show players names
       ctx.fillText(shortenName(playerName, 8), playerColumnX, baseY + maxColumnHeight + gapY);
     }
   };
 
-  // задает максимальную длину выводимого имени
+  // Max name length
   var shortenName = function (name, maxLength) {
     return name.slice(0, maxLength);
-  };
-
-  // сортирует массив чисел и находит наибольшее
-  var getMaxValue = function (arr) {
-    var maxValue = arr[0];
-
-    for (var i = 1; i < arr.length; i++) {
-      if (arr[i] > maxValue) {
-        maxValue = arr[i];
-      }
-    }
-
-    return maxValue;
   };
 })();
