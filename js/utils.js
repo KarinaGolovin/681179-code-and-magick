@@ -17,11 +17,11 @@ window.usefulUtilities = {
 
     return maxValue;
   },
-  createSequence: function (array) {
+  createSequence: function (arr) {
     var currentIndex = 0;
 
     return function () {
-      return array[++currentIndex % array.length];
+      return arr[++currentIndex % arr.length];
     };
   },
 };

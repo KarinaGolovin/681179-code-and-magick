@@ -126,4 +126,3 @@
     document.addEventListener('mouseup', stopPopup);
   });
 })();
-
