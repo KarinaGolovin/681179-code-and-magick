@@ -16,5 +16,12 @@ window.usefulUtilities = {
     }
 
     return maxValue;
-  }
+  },
+  createSequince: function (array) {
+    var currentIndex = 0;
+
+    return function () {
+      return array[++currentIndex % array.length];
+    };
+  },
 };
