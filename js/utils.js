@@ -17,7 +17,7 @@ window.usefulUtilities = {
 
     return maxValue;
   },
-  createSequince: function (array) {
+  createSequence: function (array) {
     var currentIndex = 0;
 
     return function () {
