@@ -108,26 +108,26 @@
   randomCharacterList.appendChild(fragment);
 
   // Wizard character
-  var fireballColorGenerator = createSequence(FIREBALL_COLORS);
+  var getFireballColor = createSequence(FIREBALL_COLORS);
 
   fireball.addEventListener('click', function () {
-    var color = fireballColorGenerator();
+    var color = getFireballColor();
     fireball.style.background = color;
     document.querySelector('[name="fireball-color"]').value = color;
   });
 
-  var coatColorGenerator = createSequence(COAT_COLORS);
+  var getCoatColor = createSequence(COAT_COLORS);
 
   wizardCoat.addEventListener('click', function () {
-    var color = coatColorGenerator();
+    var color = getCoatColor();
     document.querySelector('[name="coat-color"]').value = color;
     wizardCoat.style.fill = color;
   });
 
-  var eyeColorGenerator = createSequence(EYES_COLORS);
+  var getEyeColor = createSequence(EYES_COLORS);
 
   wizardEyes.addEventListener('click', function () {
-    var color = eyeColorGenerator();
+    var color = getEyeColor();
     document.querySelector('[name="eyes-color"]').value = color;
     wizardEyes.style.fill = color;
   });

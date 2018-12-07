@@ -3,7 +3,6 @@
 (function () {
   var artifact = document.querySelector('.star');
   var artifactsSetup = document.querySelector('.setup-artifacts');
-  // var artifactCells = artifactsSetup.querySelectorAll('setup-artifacts-cell');
 
   var removeShadow = function (event) {
     var parentElement = event.currentTarget;
@@ -17,7 +16,6 @@
   var draggedElement = null;
 
   document.addEventListener('dragstart', function (event) {
-    //event.dataTransfer.setData('text/plain', event.target.src);
     drop = false;
     if (event.target.classList.contains('star')) {
       draggedElement = event.target;
