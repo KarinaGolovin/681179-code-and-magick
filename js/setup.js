@@ -66,6 +66,8 @@
     return props[window.usefulUtilities.getRandomNumber(0, props.length - 1)];
   };
 
+  var createSequence = window.usefulUtilities.createSequence;
+
   // Generate random character options
   var createRandomCharacter = function () {
     return {
@@ -106,20 +108,26 @@
   randomCharacterList.appendChild(fragment);
 
   // Wizard character
+  var getFireballColor = createSequence(FIREBALL_COLORS);
+
   fireball.addEventListener('click', function () {
-    var color = getRandomProperty(FIREBALL_COLORS);
+    var color = getFireballColor();
     fireball.style.background = color;
     document.querySelector('[name="fireball-color"]').value = color;
   });
 
+  var getCoatColor = createSequence(COAT_COLORS);
+
   wizardCoat.addEventListener('click', function () {
-    var color = getRandomProperty(COAT_COLORS);
+    var color = getCoatColor();
     document.querySelector('[name="coat-color"]').value = color;
     wizardCoat.style.fill = color;
   });
 
+  var getEyeColor = createSequence(EYES_COLORS);
+
   wizardEyes.addEventListener('click', function () {
-    var color = getRandomProperty(EYES_COLORS);
+    var color = getEyeColor();
     document.querySelector('[name="eyes-color"]').value = color;
     wizardEyes.style.fill = color;
   });

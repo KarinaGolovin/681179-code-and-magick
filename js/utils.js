@@ -16,5 +16,12 @@ window.usefulUtilities = {
     }
 
     return maxValue;
-  }
+  },
+  createSequence: function (arr) {
+    var currentIndex = 0;
+
+    return function () {
+      return arr[++currentIndex % arr.length];
+    };
+  },
 };
