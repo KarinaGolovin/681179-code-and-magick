@@ -24,4 +24,19 @@ window.usefulUtilities = {
       return arr[++currentIndex % arr.length];
     };
   },
+  getRandomArraySlice: function (arr, count) {
+    if (arr.length < count) {
+      return arr;
+    }
+
+    var clone = [].concat(arr);
+    var arrSlice = [];
+
+    while (count--) {
+      var randomIndex = this.getRandomNumber(0, clone.length - 1);
+      arrSlice.push(clone.splice(randomIndex, 1)[0]);
+    }
+
+    return arrSlice;
+  }
 };

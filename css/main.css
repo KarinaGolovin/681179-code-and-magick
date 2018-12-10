@@ -1033,3 +1033,44 @@ input[type=radio]:checked + .review-mark-label
 
     opacity: 0;
 }
+
+.popup-error
+{
+    position: absolute;
+    z-index: 4;
+    top: 50%;
+    left: 50%;
+
+    box-sizing: border-box;
+    width: 800px;
+
+    transform: translateX(-50%);
+
+    color: #000;
+    background: #da641a;
+    box-shadow: 10px 10px 0 rgba(0, 0, 0, .25);
+}
+
+.popup-error-button
+{
+    display: block;
+
+    margin: 20px auto 20px;
+
+    color: #fff;
+    background: #1cb34d;
+}
+
+.popup-error-button:disabled
+{
+    opacity: .3;
+}
+
+.popup-error-message
+{
+    font-size: 20px;
+    line-height: 1.5;
+
+    width: 620px;
+    margin: 40px auto;
+}

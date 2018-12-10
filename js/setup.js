@@ -1,7 +1,6 @@
 'use strict';
 
 (function () {
-  var CHARACTER_COUNT = 4;
   var WIZARD_NAMES = [
     'Иван',
     'Хуан Себастьян',
@@ -90,22 +89,43 @@
     var characterCoatTemplate = characterElement.querySelector('.wizard-coat');
     var characterEyesTemplate = characterElement.querySelector('.wizard-eyes');
     // Rewrite template options on random character options
-    characterNameTemplate.textContent = character.getFullname();
-    characterCoatTemplate.style.fill = character.coatColor;
-    characterEyesTemplate.style.fill = character.eyesColor;
+    characterNameTemplate.textContent = character.name;
+    characterCoatTemplate.style.fill = character.colorCoat;
+    characterEyesTemplate.style.fill = character.colorEyes;
 
     return characterElement;
   };
 
-  // Create fragment to hold all characters before append to randomCharacterList
-  var fragment = document.createDocumentFragment();
-  // Clone characters and send them to randomCharacterList
-  for (var i = 1; i <= CHARACTER_COUNT; i++) {
-    var randomCharacter = createRandomCharacter();
-    var renderTemplate = renderCharacter(randomCharacter);
-    fragment.appendChild(renderTemplate);
-  }
-  randomCharacterList.appendChild(fragment);
+  window.characterMethods = {
+    renderCharacters: function (charactersList) {
+      var fragment = document.createDocumentFragment();
+      charactersList.forEach(function (character) {
+        var renderTemplate = renderCharacter(character);
+        fragment.appendChild(renderTemplate);
+        randomCharacterList.appendChild(fragment);
+      });
+    },
+    clearCharactersContainer: function () {
+      while (randomCharacterList.lastChild) {
+        randomCharacterList.removeChild(randomCharacterList.lastChild);
+      }
+    }
+  };
+
+  // window.renderCharacters = function (charactersList) {
+  //   var fragment = document.createDocumentFragment();
+  //   charactersList.forEach(function (character) {
+  //     var renderTemplate = renderCharacter(character);
+  //     fragment.appendChild(renderTemplate);
+  //     randomCharacterList.appendChild(fragment);
+  //   });
+  // };
+
+  // window.clearCharactersContainer = function () {
+  //   while (randomCharacterList.lastChild) {
+  //     randomCharacterList.removeChild(randomCharacterList.lastChild);
+  //   }
+  // };
 
   // Wizard character
   var getFireballColor = createSequence(FIREBALL_COLORS);

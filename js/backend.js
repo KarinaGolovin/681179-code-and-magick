@@ -1,66 +1,57 @@
 'use strict';
 
 (function () {
+  var load = function (config) {
+    var url = config.url;
+    var onSuccess = config.onSuccess;
+    var onError = config.onError;
+    var method = config.method;
+    var data = config.data;
+
+    var xhr = new XMLHttpRequest();
+
+    xhr.responseType = 'json';
+
+    xhr.addEventListener('load', function () {
+      if (xhr.status === 200) {
+        onSuccess(xhr.response);
+      } else {
+        onError('Cтатус ответа: ' + xhr.status + ' ' + xhr.statusText);
+      }
+    });
+
+    xhr.addEventListener('error', function () {
+      onError('Произошла ошибка соединения');
+    });
+
+    xhr.addEventListener('timeout', function () {
+      onError('Запрос не успел выполниться за ' + xhr.timeout + 'мс');
+    });
+
+    xhr.timeout = 10000; // 10s
+
+    xhr.open(method, url);
+    xhr.send(data);
+  };
+
   window.backend = {
     save: function (onLoad, onError, data) {
-      // Создаю запрос
-      var saveRequest = new XMLHttpRequest();
-      // ответ храниться в responseText, в текстовом формате, преобразую его в данные JSON
-      saveRequest.responseType = 'json';
-
-      // Прослушиваю ответ
-      saveRequest.addEventListener('load', onLoad(saveRequest));
-      // Прослушиваю ошибки
-      saveRequest.addEventListener('error', onError('Произошла ошибка соединения'));
-
-      // Открываю запрс на сервер
-      saveRequest.open('POST', 'https://js.dump.academy/code-and-magick', true);
-      // Отправляю запрос
-      saveRequest.send(data);
+      load({
+        url: 'https://js.dump.academy/code-and-magick',
+        onSuccess: onLoad,
+        onError: onError,
+        method: 'POST',
+        data: data
+      });
     },
     load: function (onLoad, onError) {
-      var getRequest = new XMLHttpRequest();
-
-      getRequest.responseType = 'json';
-
-      getRequest.open('GET', ' https://js.dump.academy/code-and-magick/data', true);
-
-      getRequest.onload = onLoad();
-      getRequest.onerror = onError('Произошла ошибка соединения');
-
-      getRequest.send();
+      load({
+        url: 'https://js.dump.academy/code-and-magick/data',
+        onSuccess: onLoad,
+        onError: onError,
+        method: 'GET'
+      });
     }
-  };
-})();
-
-(function () {
-  var onLoad = function (request, onError, onSuccess) {
-    console.log(evt.target === request);
-    console.log(request.response);
-    console.log(request.status + ' ' + request.statusText);
-
-    if (request.status === 200) {
-      onSuccess(request.response);
-    } else {
-      onError('Cтатус ответа: ' + request.status + ' ' + request.statusText);
-    }
-  };
-
-  // // если приходит ошибка, чтоб ее поймать
-  // try {
-  //   // ответ храниться в responseText, в текстовом формате, преобразую его в данные
-  //   var requestAnswer = JSON.parse(request.responseText);
-  //   console.log(requestAnswer);
-  // } catch (err) {
-  //   console.log(err.message);
-  // }
-
-  var onError = function (message) {
-    console.log(message);
-  };
-
-  var onSuccess = function (data) {
-    console.log(data);
   };
 })();
 
