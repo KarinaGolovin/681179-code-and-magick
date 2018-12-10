@@ -5,7 +5,6 @@ window.usefulUtilities = {
   getRandomNumber: function (minNumber, maxNumber) {
     return Math.floor(minNumber + (Math.random() * (maxNumber + 1 - minNumber)));
   },
-
   getMaxValue: function (arr) {
     var maxValue = arr[0];
 

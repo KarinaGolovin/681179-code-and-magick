@@ -9,7 +9,6 @@
   var CHARACTER_COUNT = 4;
 
   var setupWindow = document.querySelector('.setup');
-  // var setupSubmitButton = document.querySelector('.setup-submit');
   var setupOpenButton = document.querySelector('.setup-open-icon');
   var setupCloseButton = setupWindow.querySelector('.setup-close');
   var nameInput = setupWindow.querySelector('.setup-user-name');
@@ -21,6 +20,18 @@
   var errorCloseButton = errorPopup.querySelector('.popup-error-button');
   var picWidth = userPic.offsetWidth;
   var picHeight = userPic.offsetHeight;
+
+  var generateOnErrorWizardsList = function () {
+    var charactersOnErrorList = [];
+    var errorCharacter = {
+      colorCoat: 'rgb(101, 137, 164)',
+      colorEyes: 'rgb(101, 137, 164)',
+    };
+    for (var i = 0; i < CHARACTER_COUNT; i++) {
+      charactersOnErrorList.push(errorCharacter);
+    }
+    return charactersOnErrorList;
+  };
 
   // Event Listeners
   var closePopup = function () {
@@ -39,8 +50,12 @@
     window.backend.load(function (charactersList) {
       var randomCharacters = window.usefulUtilities.getRandomArraySlice(charactersList, CHARACTER_COUNT);
       window.characterMethods.renderCharacters(randomCharacters);
-    }, function onError(message) {
-      // ошибка загрузки персонажей, надо ли ее отображать и как?
+    }, function onError() {
+      var fakeCharacters = generateOnErrorWizardsList();
+      window.characterMethods.renderCharacters(fakeCharacters);
+      document.querySelectorAll('.setup-similar-content').forEach(function (element) {
+        element.classList.add('low-opacity');
+      });
     });
   };
 
