@@ -73,7 +73,7 @@
     }
   };
 
-  // On submit to save data -------------------------------------
+  // On submit to save data
   var closeErrorOnOutClick = function (event) {
     event.preventDefault();
     if (!event.target.closest('.popup-error')) {
@@ -162,7 +162,7 @@
 
   nameInput.addEventListener('invalid', validateNameInput);
 
-  // -----------drag-n-drop----------
+  // Drag-n-drop
   var dragHapened = false;
 
   picUploadButton.addEventListener('click', function (evt) {

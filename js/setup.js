@@ -1,28 +1,6 @@
 'use strict';
 
 (function () {
-  // var WIZARD_NAMES = [
-  //   'Иван',
-  //   'Хуан Себастьян',
-  //   'Мария',
-  //   'Кристоф',
-  //   'Виктор',
-  //   'Юлия',
-  //   'Люпита',
-  //   'Вашингтон',
-  // ];
-
-  // var WIZARD_SURNAMES = [
-  //   'да Марья',
-  //   'Верон',
-  //   'Мирабелла',
-  //   'Вальц',
-  //   'Онопко',
-  //   'Топольницкая',
-  //   'Нионго',
-  //   'Ирвинг',
-  // ];
-
   var COAT_COLORS = [
     'rgb(101, 137, 164)',
     'rgb(241, 43, 107)',
@@ -59,24 +37,7 @@
 
   similarCharacterBlock.classList.remove('hidden');
 
-  // var getRandomProperty = function (props) {
-  //   return props[window.usefulUtilities.getRandomNumber(0, props.length - 1)];
-  // };
-
   var createSequence = window.usefulUtilities.createSequence;
-
-  // // Generate random character options
-  // var createRandomCharacter = function () {
-  //   return {
-  //     name: getRandomProperty(WIZARD_NAMES),
-  //     surname: getRandomProperty(WIZARD_SURNAMES),
-  //     coatColor: getRandomProperty(COAT_COLORS),
-  //     eyesColor: getRandomProperty(EYES_COLORS),
-  //     getFullname: function () {
-  //       return this.name + ' ' + this.surname;
-  //     }
-  //   };
-  // };
 
   // Render random character template
   var renderCharacter = function (character) {
