@@ -1,29 +1,6 @@
 'use strict';
 
 (function () {
-  var CHARACTER_COUNT = 4;
-  var WIZARD_NAMES = [
-    'Иван',
-    'Хуан Себастьян',
-    'Мария',
-    'Кристоф',
-    'Виктор',
-    'Юлия',
-    'Люпита',
-    'Вашингтон',
-  ];
-
-  var WIZARD_SURNAMES = [
-    'да Марья',
-    'Верон',
-    'Мирабелла',
-    'Вальц',
-    'Онопко',
-    'Топольницкая',
-    'Нионго',
-    'Ирвинг',
-  ];
-
   var COAT_COLORS = [
     'rgb(101, 137, 164)',
     'rgb(241, 43, 107)',
@@ -55,57 +32,43 @@
   var fireball = document.querySelector('.setup-fireball-wrap');
   var characterPopupPanel = document.querySelector('.setup');
   var similarCharacterBlock = characterPopupPanel.querySelector('.setup-similar');
-  // Place to put template list
   var randomCharacterList = similarCharacterBlock.querySelector('.setup-similar-list');
-  // wizard template to clone in randomCharacterList
   var similarCharacterTemplate = document.querySelector('#similar-wizard-template');
 
   similarCharacterBlock.classList.remove('hidden');
 
-  var getRandomProperty = function (props) {
-    return props[window.usefulUtilities.getRandomNumber(0, props.length - 1)];
-  };
-
   var createSequence = window.usefulUtilities.createSequence;
-
-  // Generate random character options
-  var createRandomCharacter = function () {
-    return {
-      name: getRandomProperty(WIZARD_NAMES),
-      surname: getRandomProperty(WIZARD_SURNAMES),
-      coatColor: getRandomProperty(COAT_COLORS),
-      eyesColor: getRandomProperty(EYES_COLORS),
-      getFullname: function () {
-        return this.name + ' ' + this.surname;
-      }
-    };
-  };
 
   // Render random character template
   var renderCharacter = function (character) {
-    // Clone template
     var characterElement = similarCharacterTemplate.content.cloneNode(true);
-    // Link on template wizard options
+
     var characterNameTemplate = characterElement.querySelector('.setup-similar-label');
     var characterCoatTemplate = characterElement.querySelector('.wizard-coat');
     var characterEyesTemplate = characterElement.querySelector('.wizard-eyes');
-    // Rewrite template options on random character options
-    characterNameTemplate.textContent = character.getFullname();
-    characterCoatTemplate.style.fill = character.coatColor;
-    characterEyesTemplate.style.fill = character.eyesColor;
+
+    characterNameTemplate.textContent = character.name;
+    characterCoatTemplate.style.fill = character.colorCoat;
+    characterEyesTemplate.style.fill = character.colorEyes;
 
     return characterElement;
   };
 
-  // Create fragment to hold all characters before append to randomCharacterList
-  var fragment = document.createDocumentFragment();
-  // Clone characters and send them to randomCharacterList
-  for (var i = 1; i <= CHARACTER_COUNT; i++) {
-    var randomCharacter = createRandomCharacter();
-    var renderTemplate = renderCharacter(randomCharacter);
-    fragment.appendChild(renderTemplate);
-  }
-  randomCharacterList.appendChild(fragment);
+  window.characterMethods = {
+    renderCharacters: function (charactersList) {
+      var fragment = document.createDocumentFragment();
+      charactersList.forEach(function (character) {
+        var renderTemplate = renderCharacter(character);
+        fragment.appendChild(renderTemplate);
+        randomCharacterList.appendChild(fragment);
+      });
+    },
+    clearCharactersContainer: function () {
+      while (randomCharacterList.lastChild) {
+        randomCharacterList.removeChild(randomCharacterList.lastChild);
+      }
+    }
+  };
 
   // Wizard character
   var getFireballColor = createSequence(FIREBALL_COLORS);

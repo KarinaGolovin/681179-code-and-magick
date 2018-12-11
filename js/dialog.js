@@ -6,14 +6,32 @@
     esc: 27
   };
 
+  var CHARACTER_COUNT = 4;
+
   var setupWindow = document.querySelector('.setup');
   var setupOpenButton = document.querySelector('.setup-open-icon');
   var setupCloseButton = setupWindow.querySelector('.setup-close');
   var nameInput = setupWindow.querySelector('.setup-user-name');
   var userPic = setupWindow.querySelector('.setup-user-pic');
   var picUploadButton = setupWindow.querySelector('.upload');
+  var setupForm = setupWindow.querySelector('.setup-wizard-form');
+  var errorPopup = document.querySelector('.popup-error');
+  var errorMessage = errorPopup.querySelector('.popup-error-message');
+  var errorCloseButton = errorPopup.querySelector('.popup-error-button');
   var picWidth = userPic.offsetWidth;
   var picHeight = userPic.offsetHeight;
+
+  var generateOnErrorWizardsList = function () {
+    var charactersOnErrorList = [];
+    var errorCharacter = {
+      colorCoat: 'rgb(101, 137, 164)',
+      colorEyes: 'rgb(101, 137, 164)',
+    };
+    for (var i = 0; i < CHARACTER_COUNT; i++) {
+      charactersOnErrorList.push(errorCharacter);
+    }
+    return charactersOnErrorList;
+  };
 
   // Event Listeners
   var closePopup = function () {
@@ -26,6 +44,19 @@
   var openPopup = function () {
     setupWindow.classList.remove('hidden');
     setupWindow.classList.add('active');
+    setupOpenButton.blur();
+
+    window.characterMethods.clearCharactersContainer();
+    window.backend.load(function (charactersList) {
+      var randomCharacters = window.usefulUtilities.getRandomArraySlice(charactersList, CHARACTER_COUNT);
+      window.characterMethods.renderCharacters(randomCharacters);
+    }, function onError() {
+      var fakeCharacters = generateOnErrorWizardsList();
+      window.characterMethods.renderCharacters(fakeCharacters);
+      document.querySelectorAll('.setup-similar-content').forEach(function (element) {
+        element.classList.add('low-opacity');
+      });
+    });
   };
 
   var openOnEnterPress = function (event) {
@@ -41,6 +72,48 @@
       closePopup();
     }
   };
+
+  // On submit to save data
+  var closeErrorOnOutClick = function (event) {
+    event.preventDefault();
+    if (!event.target.closest('.popup-error')) {
+      closeErrorPopup();
+    }
+  };
+
+  var closeErrorOnEscPress = function (event) {
+    if (event.keyCode === KEY_CODES.esc) {
+      event.preventDefault();
+      closeErrorPopup();
+    }
+  };
+
+  var closeErrorPopup = function () {
+    errorPopup.classList.add('hidden');
+    errorMessage.textContent = '';
+    errorCloseButton.removeEventListener('click', closeErrorPopup);
+    document.removeEventListener('keydown', closeErrorOnEscPress);
+    document.removeEventListener('click', closeErrorOnOutClick);
+    setupWindow.classList.remove('hidden');
+    setupWindow.classList.add('active');
+  };
+
+  var showErrorPopup = function (message) {
+    setupWindow.classList.add('hidden');
+    setupWindow.classList.remove('active');
+    errorMessage.textContent = 'Ошибка!' + message;
+    errorPopup.classList.remove('hidden');
+    document.addEventListener('keydown', closeErrorOnEscPress);
+    document.addEventListener('click', closeErrorOnOutClick);
+    errorCloseButton.addEventListener('click', closeErrorPopup);
+  };
+
+  setupForm.addEventListener('submit', function submitMageForm(event) {
+    event.preventDefault();
+    var formData = new FormData(event.currentTarget);
+
+    window.backend.save(closePopup, showErrorPopup, formData);
+  });
 
   // Variations of open popup
   // Click
@@ -89,7 +162,7 @@
 
   nameInput.addEventListener('invalid', validateNameInput);
 
-  // -----------drag-n-drop----------
+  // Drag-n-drop
   var dragHapened = false;
 
   picUploadButton.addEventListener('click', function (evt) {

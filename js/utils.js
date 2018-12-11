@@ -1,11 +1,9 @@
 'use strict';
 
 window.usefulUtilities = {
-  // Get random number in the range from...to
   getRandomNumber: function (minNumber, maxNumber) {
     return Math.floor(minNumber + (Math.random() * (maxNumber + 1 - minNumber)));
   },
-
   getMaxValue: function (arr) {
     var maxValue = arr[0];
 
@@ -24,4 +22,19 @@ window.usefulUtilities = {
       return arr[++currentIndex % arr.length];
     };
   },
+  getRandomArraySlice: function (arr, count) {
+    if (arr.length < count) {
+      return arr;
+    }
+
+    var clone = [].concat(arr);
+    var arrSlice = [];
+
+    while (count--) {
+      var randomIndex = this.getRandomNumber(0, clone.length - 1);
+      arrSlice.push(clone.splice(randomIndex, 1)[0]);
+    }
+
+    return arrSlice;
+  }
 };
