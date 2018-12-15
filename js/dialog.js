@@ -47,6 +47,7 @@
     setupOpenButton.blur();
 
     window.characterMethods.clearCharactersContainer();
+
     window.backend.load(function (charactersList) {
       var randomCharacters = window.usefulUtilities.getRandomArraySlice(charactersList, CHARACTER_COUNT);
       window.characterMethods.renderCharacters(randomCharacters);
@@ -57,6 +58,7 @@
         element.classList.add('low-opacity');
       });
     });
+
   };
 
   var openOnEnterPress = function (event) {

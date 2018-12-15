@@ -34,6 +34,8 @@
     xhr.send(data);
   };
 
+  var responseCache = {};
+
   window.backend = {
     save: function (onLoad, onError, data) {
       load({
@@ -44,10 +46,20 @@
         data: data
       });
     },
-    load: function (onLoad, onError) {
+    load: function (onLoad, onError, allowCached) {
+      var url = 'https://js.dump.academy/code-and-magick/data';
+
+      if (allowCached && responseCache[url]) {
+        onLoad(responseCache[url]);
+        return;
+      }
+
       load({
-        url: 'https://js.dump.academy/code-and-magick/data',
-        onSuccess: onLoad,
+        url: url,
+        onSuccess: function (response) {
+          responseCache[url] = response;
+          onLoad(response);
+        },
         onError: onError,
         method: 'GET'
       });
